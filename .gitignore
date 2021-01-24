@@ -111,3 +111,4 @@ venv.bak/
 
 *.pyc
 
+week09/mall/order/migrations
