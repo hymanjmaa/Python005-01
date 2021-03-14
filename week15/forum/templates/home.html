@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<!--<html xmlns="http://www.w3.org/1999/xhtml">-->
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>论坛</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- 样式-->
+    <link href='http://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+    <link rel="stylesheet" href="/static/css/bootstrap-responsive.css">
+    <link rel="stylesheet" href="/static/css/prettyPhoto.css"/>
+    <link rel="stylesheet" href="/static/css/flexslider.css"/>
+    <link rel="stylesheet" href="/static/css/custom-styles.css">
+
+    <!--[if lt IE 9]>
+    <link rel="stylesheet" href="css/style-ie.css"/>
+    <![endif]-->
+
+    <!-- Favicons图标 -->
+    <link rel="shortcut icon" href="/static/img/favicon.ico">
+    <link rel="apple-touch-icon" href="/static/img/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/static/img/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/static/img/apple-touch-icon-114x114.png">
+
+    <!-- js -->
+    <script src="https://cdn.bootcdn.net/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <script src="/static/js/jquery.prettyPhoto.js"></script>
+    <script src="/static/js/jquery.flexslider.js"></script>
+    <script src="/static/js/jquery.custom.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $("#btn-blog-next").click(function () {
+                $('#blogCarousel').carousel('next')
+            });
+            $("#btn-blog-prev").click(function () {
+                $('#blogCarousel').carousel('prev')
+            });
+
+            $("#btn-client-next").click(function () {
+                $('#clientCarousel').carousel('next')
+            });
+            $("#btn-client-prev").click(function () {
+                $('#clientCarousel').carousel('prev')
+            });
+
+        });
+
+        $(window).load(function () {
+
+            $('.flexslider').flexslider({
+                animation: "slide",
+                slideshow: true,
+                start: function (slider) {
+                    $('body').removeClass('loading');
+                }
+            });
+        });
+
+    </script>
+
+
+    <style>
+        .top10 {
+            font-size: 15px;
+            padding: 5px;
+            color: black;
+            display: block;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body class="home">
+<!-- 最上方两个条子 -->
+<div class="color-bar-1"></div>
+<div class="color-bar-2 color-bg"></div>
+
+<!-- 中间部分 -->
+<div class="container">
+
+    <!-- logo，搜索框，导航栏 -->
+    <div class="row header">
+
+        <!-- 左上角图片和logo -->
+        <div class="span5 logo" style="width: 250px">
+            <h5 style="font-size: 28px">论 坛</h5>
+            <div>
+                <input class="search_val">
+                <input type="button" class="search" value="搜索帖子">
+            </div>
+        </div>
+
+        <!-- 导航栏 -->
+        <div class="span7 navigation">
+            <div class="navbar hidden-phone" style="height: 40px;">
+
+                <ul class="nav">
+                    <li class="active"><a href="/">主页</a></li>
+                    <li><a href="/publish">发帖</a>&nbsp;</li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">看帖 <b
+                                class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="/all_articles/">全部帖子</a></li>
+                            {% for kind in kinds %}
+                                <li><a href="/all_articles/{{kind}}/">{{ kind }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+
+                    {% if uid %}
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown">{{ uid }}，欢迎你<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                            <li><a href="/edit_info">修改信息</a></li>
+                            </ul>
+                        </li>
+
+                        <li><a href="/logout">退出</a></li>
+                    {% else %}
+                        <li><a href="/login">登录</a></li>
+                    {% endif %}
+
+
+                </ul>
+
+            </div>
+
+        </div>
+    </div>
+    <!-- 3个结束 -->
+
+    <div class="row headline">
+
+        {% if q %}
+        <div class="span8">
+            <h3 style="margin-top: -40px;"> &nbsp;&nbsp;搜索结果<br/></h3>
+            {% for art in articles %}
+                <a href="/article/{{art.aid}}/" class="top10">{{ art.title }}</a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="span8">
+            <h3 style="margin-top: -40px;"> &nbsp;&nbsp;最新帖子<br/></h3>
+            {% for art in articles %}
+                <a href="/article/{{art.aid}}/" class="top10">{{ art.title }}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+
+        <!-- 指导 -->
+        <div class="span4">
+            <div class="span8">
+            <h3 style="margin-top: -40px;"> &nbsp;&nbsp;最新回复<br/></h3>
+            {% for rep in replies %}
+                <a href="/article/{{rep.aid}}/" class="top10">{{ rep.content }}</a>
+            {% endfor %}
+        </div>
+        </div>
+    </div>
+    <!-- top 10结束 -->
+
+</div>
+<!-- 中间部分结束 -->
+
+<!-- 回到顶端 -->
+<div id="toTop" class="hidden-phone hidden-tablet">回到顶端</div>
+
+
+<script>
+    $('.search').click(function () {
+        var search_val = $('.search_val').val()
+        window.location.href = "/?q=" + search_val;
+    });
+
+</script>
+</body>
+</html>
